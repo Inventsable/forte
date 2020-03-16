@@ -564,6 +564,6 @@ svg {
   fill: var(--color-scrollbar-thumb);
 }
 .keyboard-black, .keyboard-white {
-  transition: fill 150ms var(--quint) 20ms;
+  transition: fill 80ms var(--quint) 0ms;
 }
 </style>

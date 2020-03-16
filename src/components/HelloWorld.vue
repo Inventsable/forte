@@ -38,7 +38,6 @@ export default {
         count++;
         if (count == 1) this.device = input;
         input.onmidimessage = function(message) {
-          console.log(message)
           if (self.device && (message.data[0] == 144 || message.data[0] == 128))
             self.handleKey(message.data)
         };
@@ -47,31 +46,27 @@ export default {
     onMIDISuccess(midiAccess) {
       this.listenForKeys(midiAccess);
       midiAccess.onstatechange = e => {
-        console.log(e)
-        if (e.port.state !== 'disconnected') {
+        if (e.port.state !== 'disconnected') 
           this.listenForKeys(midiAccess)
-        } else {
-          this.device = null;
-        }
+        else this.device = null;        
       }
-      console.log(midiAccess)
-      
     },
     handleKey(data) {
-      console.log(data)
       data[0] == 144 ? this.keyOn(data) : this.keyOff(data)
     },
     keyOn(data) {
-      this.$refs.piano.setKey(data)
+      try {
+        this.$refs.piano.setKey(data)
+      } catch(e) {
+        // 
+      }
     },
     keyOff(data) {
-      this.$refs.piano.resetKey(data)
-    },
-    getMIDIMessage(midiMessage) {
-      console.log(midiMessage);
-    },
-    onMIDIFailure() {
-      console.log("Could not access your MIDI devices.");
+      try {
+        this.$refs.piano.resetKey(data)
+      } catch(e) {
+        // 
+      }
     }
   }
 };
