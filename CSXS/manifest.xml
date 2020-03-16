@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ExtensionManifest ExtensionBundleId="com.forte" ExtensionBundleVersion="1.0.0" ExtensionBundleName="forte" Version="8.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ExtensionList>
+    <Extension Id="com.forte.panel" Version="1.0.0" />
+  </ExtensionList>
+  <ExecutionEnvironment>
+    <HostList>
+      <Host Name="ILST" Version="[23,99.9]" />
+      <Host Name="AUDT" Version="[12,99.9]" />
+    </HostList>
+    <LocaleList>
+      <Locale Code="All" />
+    </LocaleList>
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="8.0" />
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+  <DispatchInfoList>
+    <Extension Id="com.forte.panel">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./public/index-dev.html</MainPath>
+          <!-- <MainPath>./dist/index.html</MainPath> -->
+          <CEFCommandLine>
+            <Parameter>--enable-nodejs</Parameter>
+            <Parameter>--mixed-context</Parameter>
+          </CEFCommandLine>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>forte</Menu>
+          <Geometry>
+            <Size>
+              <Height>200</Height>
+              <Width>730</Width>
+            </Size>
+            <MaxSize>
+              <Height>200</Height>
+              <Width>730</Width>
+            </MaxSize>
+            <MinSize>
+              <Height>100</Height>
+              <Width>365</Width>
+            </MinSize>
+          </Geometry>
+          <Icons />
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>
