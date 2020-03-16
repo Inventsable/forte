@@ -60,6 +60,11 @@ export default {
 </script>
 
 <style>
+#app {
+  user-select: none;
+  cursor: default;
+}
+
 #nav {
   padding: 10px;
   display: flex;
