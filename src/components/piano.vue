@@ -558,9 +558,12 @@ svg {
   fill: var(--color-bg);
 }
 .keyboard-white {
-  fill: #727272;
+  fill: var(--color-scrollbar-arrow);
 }
 .keyboard-black {
-  fill: #3f3f3f;
+  fill: var(--color-scrollbar-thumb);
+}
+.keyboard-black, .keyboard-white {
+  transition: fill 150ms var(--quint) 20ms;
 }
 </style>
