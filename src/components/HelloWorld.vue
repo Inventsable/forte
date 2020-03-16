@@ -63,7 +63,6 @@ export default {
         count++;
         if (count == 1) this.device = input;
         input.onmidimessage = function(message) {
-          console.log(message)
           if (self.device && (message.data[0] == 144 || message.data[0] == 128))
             self.handleKey(message.data)
         };

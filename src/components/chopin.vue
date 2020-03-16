@@ -431,12 +431,21 @@ export default {
           hover: false,
           class: this.blackKeys.includes(i)
             ? "keyboard-black"
-            : "keyboard-white"
+            : "keyboard-white",
+          octave: 0,
+          note: '',
+          name: '',
+          num: 0,
         };
+        key.octave = i < 3 ? 0 : Math.round(((i + 3) / 12));
+        let firstKeys = ['a', 'a#', 'b']
+        let notes = ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b' ]
+        key.num = key.octave > 0 ? (i - 3) % 12 : i
+        key.note = key.octave > 0 ? notes[key.num] : firstKeys[key.num]
+        key.name = `${key.note}${key.octave}`
         this.realKeys.push(key);
       }
-      console.log("Key creation complete");
-      console.log(this.realKeys);
+      console.log("Key creation complete");      
     },
     styleKey(key) {
       if (!this.isMounted) {
@@ -462,6 +471,7 @@ export default {
       let key = this.realKeys[args[1] - 21];
       key.state = args[0] == 144;
       key.velocity = args[2];
+      console.log(`${key.name}`)
     },
     resetKey(args) {
       let key = this.realKeys[args[1] - 21];
