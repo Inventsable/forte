@@ -2,7 +2,7 @@
   <div class="main-wrapper full-height">
     <div v-if="device" class="main-wrapper">
       <div class="piano-anno">{{device.name}}</div>
-      <chopin ref="piano" />
+      <chopin ref="piano" @keyUp="keyUp" @keyDown="keyDown" />
     </div>
     <div v-else class="main-wrapper full-height">
       <div class="piano-anno full-height" style="color: var(--color-scrollbar-arrow);">No device found</div>
@@ -16,8 +16,9 @@ export default {
   data: () => ({
     text: "Hello",
     device: null,
-    synth: null,
     context: null,
+    outputID: null,
+    midiAccess: null,
   }),
   components: {
     // piano: require("./piano.vue").default,
@@ -25,21 +26,26 @@ export default {
   },
   async mounted() {
     this.launchWebAPI();
-    // await Tone.start()
-        //create a synth and connect it to the master output (your speakers)
-    // this.synth = new Tone.Synth().toMaster();
-    this.context = new AudioContext();
-    this.synth = this.context.createOscillator();
-    // o.frequency.setTargetAtTime(440, context.currentTime, 0);
-    // o.connect(context.destination);
-    // o.start(0);
-    this.playKey([0, 60, 0])
   },
   methods: {
-    playKey(data) {
-      let m = data[1]
-      this.synth.frequency.setTargetAtTime(Math.pow(2, (m-69)/12)*440, this.context.currentTime, 0);
-    },  
+    keyUp(data) {
+      // this.sendKeyToMIDI(data.index + 21, true)
+    },
+    keyDown(data) {
+      this.sendKeyToMIDI(data.index + 21, false)
+    },
+    sendKeyToMIDI(key, state ) {
+      // Note duration needs work. For some reason, using a ternary to press down or up results in note only firing on up event
+      // let noteMessage = state ? [144, key, 0x40] : [128, key, 0x40];
+      let noteMessage = [144, key, 0x40];
+      let output = this.midiAccess.outputs.get(this.outputID);
+      output.send(noteMessage)
+    },
+    // No longer using Tone.js
+    // playKey(data) {
+    //   let m = data[1]
+    //   this.synth.frequency.setTargetAtTime(Math.pow(2, (m-69)/12)*440, this.context.currentTime, 0);
+    // },  
     launchWebAPI() {
       if (navigator.requestMIDIAccess) {
         navigator
@@ -50,6 +56,9 @@ export default {
     listenForKeys(midiAccess) {
       const self = this;
       let count = 0;
+      this.midiAccess = midiAccess;
+      for (var output of midiAccess.outputs.values()) 
+        this.outputID = output.id || null;
       for (var input of midiAccess.inputs.values()) {
         count++;
         if (count == 1) this.device = input;
@@ -64,7 +73,7 @@ export default {
       this.listenForKeys(midiAccess);
       midiAccess.onstatechange = e => {
         if (e.port.state !== 'disconnected') 
-          this.listenForKeys(midiAccess)
+          this.listenForKeys(midiAccess);
         else this.device = null;        
       }
     },

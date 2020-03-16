@@ -1,5 +1,5 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1460 180">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1460 180" @mouseleave="mouseState = false;">
     <rect class="keyboard-bg" width="1460" height="180" />
     <g id="piano">
       <polygon
@@ -393,7 +393,9 @@ export default {
   methods: {
     hoverKey(key, state) {
       key.hover = state;
-      if (this.mouseState && state)
+      if (!state && !this.mouseState) {
+        // do nothing
+      } else if (this.mouseState && state)
         this.clickedKey(key, true)
       else if (!this.mouseState && !state) 
         this.clickedKey(key, false)
