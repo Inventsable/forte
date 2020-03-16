@@ -1,7 +1,12 @@
 <template>
-  <div class="main-wrapper">
-    <div class="piano-anno">{{device}}</div>
-    <piano ref="piano" />
+  <div class="main-wrapper full-height">
+    <div v-if="device" class="main-wrapper">
+      <div class="piano-anno">{{device.name}}</div>
+      <piano ref="piano" />
+    </div>
+    <div v-else class="main-wrapper full-height">
+      <div class="piano-anno full-height" style="color: var(--color-scrollbar-arrow);">No device found</div>
+    </div>
   </div>
 </template>
 
@@ -10,7 +15,7 @@ export default {
   name: "HelloWorld",
   data: () => ({
     text: "Hello",
-    device: "Hello"
+    device: null,
   }),
   components: {
     piano: require("./piano.vue").default
@@ -26,19 +31,34 @@ export default {
           .then(this.onMIDISuccess, this.onMIDIFailure);
       }
     },
-    onMIDISuccess(midiAccess) {
-      let count = 0;
+    listenForKeys(midiAccess) {
       const self = this;
+      let count = 0;
       for (var input of midiAccess.inputs.values()) {
         count++;
-        if (count == 1) this.device = input.name;
+        if (count == 1) this.device = input;
         input.onmidimessage = function(message) {
-          if (message.data[0] == 144 || message.data[0] == 128)
+          console.log(message)
+          if (self.device && (message.data[0] == 144 || message.data[0] == 128))
             self.handleKey(message.data)
         };
       }
     },
+    onMIDISuccess(midiAccess) {
+      this.listenForKeys(midiAccess);
+      midiAccess.onstatechange = e => {
+        console.log(e)
+        if (e.port.state !== 'disconnected') {
+          this.listenForKeys(midiAccess)
+        } else {
+          this.device = null;
+        }
+      }
+      console.log(midiAccess)
+      
+    },
     handleKey(data) {
+      console.log(data)
       data[0] == 144 ? this.keyOn(data) : this.keyOff(data)
     },
     keyOn(data) {
@@ -63,6 +83,12 @@ export default {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.full-height {
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .piano-anno {
