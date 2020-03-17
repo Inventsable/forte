@@ -436,6 +436,7 @@ export default {
           note: '',
           name: '',
           num: 0,
+          timecode: 0,
         };
         key.octave = i < 3 ? 0 : Math.round(((i + 3) / 12));
         let firstKeys = ['a', 'a#', 'b']
@@ -471,12 +472,13 @@ export default {
       let key = this.realKeys[args[1] - 21];
       key.state = args[0] == 144;
       key.velocity = args[2];
-      console.log(`${key.name}`)
+      key.timecode = Date.now();
     },
     resetKey(args) {
       let key = this.realKeys[args[1] - 21];
       key.state = false;
       key.velocity = 0;
+      key.timecode = 0;
     }
   }
 };
@@ -485,7 +487,7 @@ export default {
 <style>
 svg {
   width: 100%;
-  max-height: 90px;
+  max-height: 150px;
   min-height: 60px;
 }
 

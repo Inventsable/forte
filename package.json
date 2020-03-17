@@ -14,12 +14,14 @@
   },
   "dependencies": {
     "cep-spy": "^1.1.1",
+    "cluecumber": "0.0.31",
     "core-js": "^3.1.2",
     "lokney": "^1.0.0",
     "tone": "^13.8.25",
     "vue": "^2.6.10",
     "vue-router": "^3.0.6",
-    "webmidi": "^2.5.1"
+    "webmidi": "^2.5.1",
+    "xolor": "^1.2.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",

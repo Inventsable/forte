@@ -1,16 +1,19 @@
 <template>
   <div id="app">
+    <!-- <Menus refresh debug :context="[{
+      label: 'Clear All'
+    }]" /> -->
     <Panel>
       <router-view />
     </Panel>
-    <Menus refresh debug />
+    
   </div>
 </template>
 
 <script>
 // Utility components, see here:
 // https://github.com/Inventsable/lokney
-import { Menus, Panel } from "lokney";
+import { Panel, Menus } from "lokney";
 /*
   Panel component above also includes:
     - Starlette UI theme and color library: 
@@ -29,9 +32,12 @@ import { Menus, Panel } from "lokney";
 export default {
   name: "App",
   components: {
+    Panel,
     Menus,
-    Panel
   },
+  data: () => ({
+    home: null,
+  }),
   mounted() {
     // If you need CEP-Spy:
     // let spy = require('cep-spy').default;
