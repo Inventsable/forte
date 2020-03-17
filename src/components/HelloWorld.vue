@@ -8,7 +8,10 @@
       ]" 
     />
     <div v-if="device" class="main-wrapper">
-      <div class="piano-anno">{{device.name}}</div>
+      <div class="alt-wrapper">
+        <div class="piano-anno">{{device.name}}</div>
+        <robot />
+      </div>
       <chopin ref="piano" @keyUp="keyUp" @keyDown="keyDown" />
     </div>
     <div v-else class="main-wrapper full-height">
@@ -40,6 +43,7 @@ export default {
     // piano: require("./piano.vue").default,
     chopin: require('./chopin.vue').default,
     Menus,
+    robot: require('./RoboPlayer.vue').default
   },
   async mounted() {
     this.launchWebAPI();
@@ -230,5 +234,16 @@ export default {
   color: var(--color-default);
   text-transform: uppercase;
   letter-spacing: 0.125ch;
+}
+
+.alt-wrapper {
+  position: absolute;
+  left: 0;
+  padding: 0px;
+  margin: 0px 10px;
+  width: calc(100% - 20px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
